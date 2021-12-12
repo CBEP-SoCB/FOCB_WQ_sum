@@ -1,5 +1,5 @@
 # FOCB_WQ
-Analysis of Friends of Casco Bay water quality  data from Casco Bay, Maine.
+Analysis of Friends of Casco Bay water quality data from Casco Bay, Maine.
 
 <img
     src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -14,7 +14,7 @@ This archive focuses on a handful of conventional water quality parameters,
 including temperature, salinity, pH, dissolved oxygen, Secchi depth and 
 chlorophyll a.
 
-Related data from FOCB on nutrietns and ocean acidification were analyzed in
+Related data from FOCB on nutrients and ocean acidification were analyzed in
 other data archives.
 
 # Statement of Purpose
@@ -54,12 +54,11 @@ State of the Bay graphical layouts.
 Friends of Casco Bay has been monitoring water quality in Casco Bay for nearly
 thirty years.  For many years, their monitoring was conducted by volunteers, at
 dozens of locations around the Bay.  In recent years, monitoring has shifted 
-more and more towards use of automated sensors and data collected by
-professional staff.  
+more towards use of automated sensors and data collected by professional staff.  
 
 ## Continuous Data 
-In 2016, FOCB began collecting continuous data from a monitoring
-location on Cousins Island.
+In 2016, FOCB began collecting continuous data from a monitoring location on 
+Cousins Island.
 
 Their "Cage of Science" monitoring apparatus consists of a YSI data sonde
 (currently an "EXO" model), collecting data on primary water quality
@@ -70,7 +69,8 @@ FOCB staff visit the site regularly, and swap out sensors and equipment as
 needed to ensure a  near-continuous year-round data record.
 
 Additional information on their continuous water quality monitoring program is
-available on the FOCB web site.
+available on the 
+[FOCB web site](https://www.cascobay.org/our-work/science/continuous-monitoring-stations/).
 
 ## Discrete Data
 FOCB continues to collect water quality data from many monitoring 
@@ -87,6 +87,6 @@ no longer monitored was not evaluated here.
 Recent changes in monitoring practices complicate data analysis, as data is not 
 uniformly available from all sites at all times of year in all years.  The 
 result is a need to evaluate and analyze data with sensitivity to possible
-bias introduced by differential sampling histories.  We analyzed most data 
+bias introduced by differential sampling histories. We analyzed most data 
 using multiple modeling strategies, to evaluate impact of sampling history 
 on our qualitative conclusions.
