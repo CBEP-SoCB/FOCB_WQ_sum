@@ -20,8 +20,8 @@ knitr::opts_chunk$set(fig.align = 'center',
 ```
 
 # Introduction
-This Notebook analyzes FOCB's "Surface" data.
-These data are pulled from long term monitoring locations around the Bay.
+This Notebook analyzes FOCB's "Surface" data. These data are pulled from long
+term monitoring locations around the Bay.
 
 These are sites visited regularly by FOCB staff, either by boat or on land.  The 
 focus is on warm season sampling (April through October), with roughly monthly
@@ -46,17 +46,16 @@ theme_set(theme_cbep())
 # Load Data
 ## Establish Folder Reference
 ```{r folder_refs}
-sibfldnm <- 'Original_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
-
-dir.create(file.path(getwd(), 'figures'), showWarnings = FALSE)
 ```
 
 ## Primary Data
 We specify column names because FOCB data has a row of names, a row of units,
 then the data.  This approach is simpler than reading names from the first
 row and correcting them to be R syntactic names.
+
 ```{r load_data, warning = FALSE}
 fn    <- 'FOCB Surface All Current Sites With BSV Data.xlsx'
 fpath <- file.path(sibling,fn)
@@ -98,9 +97,10 @@ the_data <- the_data %>%
   relocate(month, .after = year)
 ```
 
-Our data contains two stations that are not associated with 
-locations that were included in our spatial data.  We can see that because
-when we `left_join()` by `station`, no `station_name` value is carried over.
+Our data contains two stations that are not associated with locations that were
+included in our spatial data.  We can see that because when we `left_join()` by
+`station`, no `station_name` value is carried over.
+
 ```{r}
 l <- the_data %>%
   group_by(station) %>%
@@ -110,16 +110,19 @@ l <- the_data %>%
 l
 ```
 
-If we look at those records, on is represented by only a single observation, and
-the other only by data from 2020.  Neither matter for the current analysis. They
-will get filtered out when we select data to describe recent conditions, and 
-trends.
-```{r}
-the_data %>%
-  filter(station %in% l)
-```
+If we look at those records, one is represented by only a single observation,
+and the other only by data from 2020.  Neither matter for the current analysis.
+They will get filtered out when we select data to describe recent conditions,
+and trends. They will both get removed from the working data in later steps of
+data preparation.
 
 ## Address Secchi Censored Values
+Here we identify "censored" Secchi observations, that is, observations where 
+the Secchi disk was sitting on the bottom.  When the Secchi disk was sitting on
+the bottom, we substitute the observed water depths for the Secchi Depth (we
+know the water was at least that clear) and we create a boolean flag that 
+indicates that the disk had bottomed out. 
+
 ```{r}
 the_data <- the_data %>%
   mutate(secchi_2 = if_else(secchi == "BSV", water_depth, as.numeric(secchi)),
@@ -128,13 +131,13 @@ the_data <- the_data %>%
   relocate(bottom_flag, .after = secchi_2)
 ```
 
-
 ## Transform Secchi and Chlorophyll Data
 We create a log plus one transformed version of the Chlorophyll data here, to
 facilitate "parallel" construction of statistical models.  That transform 
 regularizes variances and linearizes response fairly well. We also develop a 
 square root transform of the Secchi data, for similar purposes, but the results
 are not as effective.
+
 ```{r}
 the_data <- the_data %>%
   mutate(sqrt_secchi = sqrt(secchi_2),
@@ -157,6 +160,7 @@ months as inshore sites.
 
 ## Create Recent Data
 We filter to the last five FULL years of data, 2015 through 2019.
+
 ```{r}
 recent_data <- the_data %>%
   filter(year > 2014 & year < 2020) %>%
@@ -170,6 +174,7 @@ especially medians and means.  We will probably map median values, as
 they are less affected by the heavy-tailed distributions.  We also use a
 portion of these data later to test which station median characteristics are 
 correlated with median temperature.
+
 ```{r}
 sum_data <- recent_data %>%
   select(-dt, -year, -time, -sample_depth, 
@@ -179,7 +184,7 @@ sum_data <- recent_data %>%
   summarize(across(c(secchi_2:log1_chl), list(mn =  ~ mean(.x, na.rm = TRUE),
                                          med = ~ median(.x, na.rm = TRUE))))
 
-sibfldnm <- 'Derived_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
 
@@ -193,6 +198,7 @@ write_csv(sum_data, fpath, na = '')
 ## Create Nested Tibble
 To run parallel analyses, we  reorganize the data into a  nested tibble.  We 
 also add a list of labels and measurement units to simplify labeling of plots.
+
 ```{r}
 units <- tibble(parameter = c('secchi_2', 'sqrt_secchi', 'temperature', 
                               'salinity', 'do',
@@ -235,6 +241,7 @@ for (p in nested_data$parameter) {
   cat('\n\n')
 }
 ```
+
 As suspected, all parameters differ among sites somewhere.
 
 ### Diagnostic Plots
@@ -247,16 +254,16 @@ for (p in nested_data$parameter) {
 
 So....
 *  Secchi has moderate heavy tails, with weak evidence of a scale-location
-   relationship.  Square root of Secchi is not much better.
+   relationship.  Square root of Secchi is not much better.  
 *  Temperature is left skewed.  
 *  Salinity has VERY heavy tails, especially at the lower end.  
 *  DO has slight skew, with a heavy upper tail. that is, it's skewed right.  
 *  Percent Saturation is slightly heavy tailed, with weak evidence of
    scale-location relationships.  
-*  pH is heavy tailed and higher error at lower predicted pH (sites).
+*  pH is heavy tailed and higher error at lower predicted pH (sites).  
 *  chlorophyll has a couple of outliers with moderate leverage.  It's probably 
    heavy-tailed too.  We see the best model there is on the log plus one 
-   transformed chlorophyll data.
+   transformed chlorophyll data.  
 
 # Options for More Complex Models
 We could in principal adjust models for different sampling histories
@@ -274,9 +281,10 @@ year.
 We should consider interannual and month to month (day of year?) variability, 
 and whether there is any advantage to modeling those variations.
 
-## Exploratory Graphics
-### Create Long Form Data
+# Exploratory Graphics
+## Create Long Form Data
 We create long-form data to facilitate faceted graphics.
+
 ```{r}
 long_data <- recent_data %>%
   select(-time, -sample_depth, 
@@ -286,7 +294,7 @@ long_data <- recent_data %>%
   filter(! is.na(value))
 ```
 
-### Month to Month Plot
+## Month to Month Plot
 ```{r fig.width = 8, fig.height = 8}
 for (p in unique(long_data$parameter)) {
   plt <- long_data %>%
@@ -315,11 +323,12 @@ standard errors in our models.  Such models probably have little value for
 parameter estimation here, but they may have significant value in identifying 
 long-term trends.
 
-## Hierarchical Models
+# Hierarchical Models
 We fit a year to year random factor and seasonal (monthly) terms. This reflects 
 our belief that each year sets up somewhat differently due to weather, 
 especially in the spring, but that some seasonal patterns shuold be robust, and
 of potential direct interest to us.
+
 ```{r}
 nested_data <- nested_data %>%
   mutate(lmers = map(data, function(df) gam(value ~ station + month + 
@@ -327,17 +336,18 @@ nested_data <- nested_data %>%
                                             data = df)))
 ```
 
-### Review Model Results
+## Review Model Results
 Interestingly, year to year variation is statistically important for all
 parameters.  
 
-#### Diagnostic Plots
+## Diagnostic Plots
 ```{r}
 for (p in nested_data$parameter) {
   gam.check(nested_data$lmers[nested_data$parameter == p][[1]],
        sub = p)
 }
 ```
+
 Most of those look pretty good, with the exception of salinity, which looks 
 fairly awful,  and pH, which is merely bad.
 
@@ -347,11 +357,12 @@ the difference is small, and it complicates interpretation later.
 Log 1 Chlorophyll is better than either untransformed chlorophyll or log 
 of chlorophyll. 
 
-### Refit the Chlorophyll Model
+## Refit the Chlorophyll Model
 We want the transformation in the model object, so we can use the tools in
 `emmeans` to extract marginal means.  We refit the chlorophyll model, add it
 to the nested tibble, and delete the other two chlorophyll data rows and the 
 square root transformed Secchi depth row.
+
 ```{r}
 df <- nested_data %>%
   filter(parameter == 'chl') %>%
@@ -368,7 +379,7 @@ nested_data <- nested_data %>%
   filter(! parameter %in% c('log_chl', 'log1_chl', 'sqrt_secchi'))
 ```
 
-### ANOVAS
+## ANOVAS
 ```{r}
 for (p in nested_data$parameter) {
   cat(p)
@@ -376,6 +387,7 @@ for (p in nested_data$parameter) {
   cat('\n\n')
 }
 ```
+
 Note that the conclusions are that ALL parameters vary seasonally and by
 location.  Year to year variation is also important for all
 parameters, which is perhaps less obvious. (Note that this model 
@@ -399,16 +411,10 @@ covariates.
 We take three approaches to check for the importance of temperature as a 
 predictor of other water quality parameters:
 
-1.   We examine whether temperature is a significant predictor of other
-parameters in linear models where we treat station and year as random factors
-
-2.  
+We need to regenerate the long-form data, to facilitate faceted graphics. We
+retain temperature as a predictor variable.
  
- 
- We need to regenerate the long-form data, retaining temperature asa predictor
- variable, not breaking it into a separate dataframe.
- 
- We create long-form data to facilitate faceted graphics.
+We create long-form data.
 
 ```{r}
  nested_data_2 <- recent_data %>%
@@ -421,7 +427,6 @@ parameters in linear models where we treat station and year as random factors
   group_by(parameter) %>%
   nest() %>%
   left_join(units, by = 'parameter')
- 
 ```
 
 ## Hierarchical Model
@@ -453,6 +458,7 @@ parameters within (random) stations and years.
 ## Correlations of Station Medians with Temperature
 We use Kendall's Tau as a robust / resistant alternative to Pearson Correlation 
 Coefficient.  A Spearman rank correlation would also be appropriate.
+
 ```{r}
 tmp <- sum_data %>%
   select(station, contains('_med')) %>%
@@ -466,11 +472,8 @@ for (parm in names(tmp)[3:11]) {
 }
 ```
 
-
 *  Warmer waters have:  
    *  Lower water clarity  
    *  Lower dissolved oxygen and percent saturation  
    *  Lower pH  
    * Higher chlorophyll  
-
-

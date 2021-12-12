@@ -1,7 +1,7 @@
 ---
 title: "Analysis of Censored Secchi Depth Data from Casco Bay Monitoring"
 author: "Curtis C. Bohlen, Casco Bay Estuary Partnership"
-date: "3/03/2021"
+date: "12/01/2021"
 output:
   github_document:
     toc: true
@@ -27,9 +27,9 @@ program, but it is the program with the deepest historical record.
 
 Secchi Depth data provides a good estimate of water clarity, but the data 
 can be biased by inability to observe Secchi depths when the water is 
-shallower than where the Secchi disk disappears in the water column. Is is 
+shallower than where the Secchi disk disappears in the water column. It is 
 important to realize that a Secchi disk on the bottom is NOT the same as a lack 
-of data - -after all, you know the water was at least clear enough to see the 
+of data.  After all, you know the water was at least clear enough to see the 
 disk that far down.
 
 # Load Libraries
@@ -47,17 +47,16 @@ theme_set(theme_cbep())
 # Load Data
 ## Establish Folder Reference
 ```{r folder_refs}
-sibfldnm <- 'Original_Data'
+sibfldnm <- 'Data'
 parent   <- dirname(getwd())
 sibling  <- file.path(parent,sibfldnm)
-
-dir.create(file.path(getwd(), 'figures'), showWarnings = FALSE)
 ```
 
 ## Primary Data
 We specify column names because FOCB data has a row of names, a row of units,
 then the data.  This approach is simpler than reading names from the first
 row and correcting them to be R syntactic names.
+
 ```{r load_data, warning = FALSE}
 fn    <- 'FOCB Surface All Current Sites With BSV Data.xlsx'
 fpath <- file.path(sibling,fn)
@@ -97,6 +96,12 @@ the_data <- the_data %>%
 ```
 
 ## Address Secchi Censored Values
+Here we identify "censored" Secchi observations, that is, observations where 
+the Secchi disk was sitting on the bottom.  When the Secchi disk was sitting on
+the bottom, we substitute the observed water depths for the Secchi Depth (we
+know the water was at least that clear) and we create a boolean flag that 
+indicates that the disk had bottomed out.  
+
 ```{r}
 the_data <- the_data %>%
   mutate(secchi_2 = if_else(secchi == "BSV", water_depth, as.numeric(secchi)),
@@ -104,11 +109,11 @@ the_data <- the_data %>%
   filter(! is.na(secchi)) %>%
   relocate(secchi_2, .after = secchi) %>%
   relocate(bottom_flag, .after = secchi_2)
-  
 ```
 
 ## Create Recent Data
 We filter to the last five FULL years of data, 2015 through 2019.
+
 ```{r}
 recent_data <- the_data %>%
   filter(year > 2014 & year < 2020) %>%
@@ -116,6 +121,10 @@ recent_data <- the_data %>%
 ```
 
 ## Create Trend Data
+For trend analysis we want to focus on sites with long-term records.  We focus
+on Sites wit hat least 10 years of data, and at least two years of data from the 
+last five years.
+
 ```{r}
 years_data <- the_data %>%
   group_by(station, year) %>%
@@ -124,7 +133,6 @@ years_data <- the_data %>%
   summarize(years = sum(yes, na.rm = TRUE),
             recent_years =  sum(yes & year > 2014, na.rm = TRUE),
             .groups = 'drop')
-  
 ```
 
 ```{r}
@@ -140,7 +148,7 @@ rm(selected_stations, years_data)
 ```
 
 
-```{r fig.height= 6, fig.width = 7}
+```{r exploratory_graphic, fig.height= 5, fig.width = 5}
 ggplot(recent_data, 
        aes(x = fct_reorder(station_name, secchi_2, .fun = mean, na.rm = TRUE),
            y = secchi_2)) +
@@ -157,34 +165,34 @@ ggplot(recent_data,
         legend.title = element_blank())
 ```
 
-So, the complication we run into here, compared to dealing with this in lakes,
-is that the tides are a factor. Censored values are infrequent, except at a 
-couple of sites, where water is shallow anyway.
-
+So, the complication we run into here, compared to dealing with Secchi depths
+in lakes, is that the tides are a factor. Censored values are infrequent, except 
+at a couple of sites, where water is shallow anyway.  What that means is that 
+our more sophisticated handling of censored values should have little impact on
+the qualitative results of our analysis.
 
 # Managing Censored Data with Maximum Likelihood
-There are several locations with a high proportion of Secchi observations
-censored. We can try to make use of the FACT that observations are censored to
-better estimate typical water clarity conditions.
+There are several locations where a high proportion of Secchi observations
+were censored. We can try to make use of the FACT that observations are censored 
+to better estimate "typical" water clarity conditions.
 
-For most sampling stations, it's not clear what the advantage of a full censored 
-analysis may be over simply reporting medians might be. for a FEW sites,
-censored observations are not observed under shallow Secchi conditions, 
-suggesting Secchi depth may be related to tides.  If that's the case, reporting
-medians may still be inappropriate.
+For most sampling stations, it's not clear what the advantage of a full censored
+analysis may be over simply reporting medians. For a FEW sites, censored
+observations are not observed under shallow water / low tide conditions, but are
+observed under high tide conditions.  That suggests Secchi depth may be related
+to tides. If that's the case, reporting medians may still be inappropriate.
 
 Estimated average Secchi values are only a little more informative than the
 medians, except that they can give "credit" to sites where higher values are not
 possible, if one is willing to assume the data are (more or less) normally
 distributed within each site.
 
-The violin plots, above, suggest that's normality is not a dreadful
+The exploratory plot, above, suggests that normality is not a dreadful 
 assumption for most Stations, although some show inordinately long tails and a
 few show some skew.
 
 Still, it is possible to use maximum likelihood methods to estimate what the
-Secchi depth "would have been" if they had not been censored.
-
+Secchi depth "would be expected to be" if observations had not been censored.
 
 ## Log Likelihood Function
 We start by defining a log likelihood function that:
@@ -194,7 +202,6 @@ We start by defining a log likelihood function that:
       data is censored); and
    b. The probability of the observed value, under an assumption of normality,
       (if the data is not censored).
-
 
 ```{r}
 secchi.loglik <-function (params, value, flag)
@@ -224,15 +231,21 @@ sum(ee.data$bottom_flag, na.rm = TRUE)
 length(ee.data[[1]])
 ```
 
-
 ```{r}
-test <- maxLik(secchi.loglik, start=c(mu=3,sigma=2), value=ee.data$secchi_2, flag=ee.data$bottom_flag)
+test <- maxLik(secchi.loglik, start=c(mu=3,sigma=2), value=ee.data$secchi_2, 
+               flag=ee.data$bottom_flag)
 test
 ```
-So that increases the estimated mean Secchi depth by about 0.35 meters, or
-about one foot.  That's probably enough to matter.
 
-# Applying to all ponds with "Secchi on Bottom" data
+The "Estimate(s)" entry in that table gives maximum likelihood estimates of mean
+and standard deviation for normally distributed data subject to censoring. The
+analysis increases the estimated mean Secchi depth by about 0.35 meters (from
+1.527 meters to 1.87 meters), or about one foot. . That's probably enough to
+matter.
+
+# Applying to all Sites with "Secchi on Bottom"
+The first question is the extent to which we expect censoring to have any 
+substantive effects on our understanding or water quality.
 ```{r}
 flagged_stations <- recent_data %>%
   filter(! is.na(secchi_2)) %>%
@@ -242,8 +255,10 @@ flagged_stations <- recent_data %>%
 flagged_stations
 ```
 
-So, for most stations, censoring is rare.  it only really matters at a handful 
-of stations. (Here, stations where at least 10% of observations were censored).
+For most stations, censoring is rare.  Censoring only matters at a handful of
+stations. Only five sites have more than 10% of observations censored, so this
+analysis is unlikely to matter at most sites.
+
 ```{r}
 flagged_stations %>% 
   filter(pctCensored > 0.1) %>%
@@ -254,7 +269,7 @@ For most of those, correcting estimated mean Secchi depths for censored values
 (as opposed to simply using observed depth as a surrogate for Secchi depth) has
 little impact on estimated means.
 
-As censored values are consistently less than 50% of observations, the impact of
+As censored values are almost always less than 50% of observations, the impact of
 censoring on medians is likely to be small. Unlike in lakes, however, we can not 
 guarantee that it has no impact on medians, as  observations are collected 
 over a wide tidal range.
@@ -263,6 +278,11 @@ over a wide tidal range.
 flagged_stations <- flagged_stations %>%
   pull(station)
 ```
+
+Here we generate tabular output for each Station that presents median, mean, and 
+adjusted means for each station, along with the difference between the two 
+estimated mean Secchi Depths (raw, using observed water depth, and adjusted for 
+censoring).
 
 ```{r}
 for (site in flagged_stations) {
@@ -292,10 +312,10 @@ for (site in flagged_stations) {
 Looking at those results, the differences are quantitatively important (more
 than a 10cm difference) at only the sites with the highest levels of censoring:
 
-
 Station               |   Station Code
 ----------------------|-------------------
 East End Beach        |   EEB18
 Upper Harraseeket     |   HR4 
 Falmouth Town Landing |   PYC43  
 Upper Fore River      | 	STR54
+
