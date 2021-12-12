@@ -6,7 +6,7 @@ Analysis of Friends of Casco Bay water quality data from Casco Bay, Maine.
     style="position:absolute;top:10px;right:50px;" />
     
 Friends of Casco Bay has been monitoring water quality in Casco Bay for nearly
-thirty years. in 2016, they began collecting continuous data from a monitoring
+thirty years. In 2016, they began collecting continuous data from a monitoring
 location on Cousins Island.  This GitHub repository contains code reviewing,
 analyzing and generating graphics based on FOCB monitoring data.
 
@@ -80,7 +80,7 @@ of surface water quality samples at all locations, and vertical profile data on
 selected parameters at a subset of sites approached by boat.
 
 Older volunteer-based data is available from additional locations, but without
-recent data at many location, we could use that historical data neither to
+recent data at many locations, we could use that historical data neither to
 depict current conditions, nor evaluate recent trends, so data from sites
 no longer monitored was not evaluated here.
 
