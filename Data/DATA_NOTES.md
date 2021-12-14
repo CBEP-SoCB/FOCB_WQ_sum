@@ -1,5 +1,26 @@
 # Original Data
+"CMS1 Data through 2019.xlsx" contains data logger data collected by FOCB
+using a YSI EXO sonde and a seperate pCO2 sensor.
 
+Column Name     | Contents                               | Units                         
+----------------|----------------------------------------|------
+Date	          | Dates, in a mixture of Excel Dates, Times, and Character Strings |
+Time	          | Time of Day, similarly, in a mixture of formats  |
+Water Depth     | Water depth (from pressure transducer on sonde)  | m
+Temperature     | Temperature                          |   	C
+Salinity	       | Salinity based on conductivity, roughly in PPT | PSU
+DO	             | Dissolved oxygen                     | mg/l
+DO%             | Percent oxygen saturation            |	%
+pH	NBS          | pH, measured with a pH electrode, this on NBS scale | Unitless
+Chl             | Chlorophyll-A (from florescence)     |	ug/l
+pCO2            | Partial pressure of CO~2~            |	ppm
+Month	          | Month                                | as integer 1 through 12   
+Year	          | Year,                                | Four digit integer
+Day             | Day of the month                     |	Integer
+Hour	          | Time of day, to nearest hour         | 0 to 23
+TA	             | Total alkalinity  (Calculated from pH and pCO~2~)  | uM/kg
+DIC             | Dissolved Inorganic carbon (Calculated)    |	uM/kg
+Omega Aragonite |	Solubility quotient aragonite (Calculated  | Unitless
 
 # Derived Data
 "FOCB Monitoring Sites SHORT NAMES.xlsx" is a hand edited version of data
@@ -45,9 +66,6 @@ log_chl_mn
 log_chl_med
 log1_chl_mn
 log1_chl_med
-
-
-
 
 ## Monitoring Locations
 The shapefile 'monitoring_locations' was derived from the Excel spreadsheet

@@ -17,6 +17,13 @@ chlorophyll a.
 Related data from FOCB on nutrients and ocean acidification were analyzed in
 other data archives.
 
+Several data sets provided by FOCB were not reported in State of Casco Bay,
+and thus are not provided here.  Versions of those data are available in the
+detailed project [archives](https://github.com/CBEP-SoCB-Details/FOCB_WQ).
+These include historic data collected by volunteers at sites no longer tracked
+by FOCB, and vertical "profile" data collecting water quality data along
+vertical transects from the surface to the bottom.
+
 # Statement of Purpose
 CBEP is committed to the ideal of open science.  Our State of the Bay data
 archives ensure the science underlying the 2020 State of the Bay report is
@@ -32,8 +39,8 @@ review, critique, learn from, and build upon CBEP science.
  
  This archive contains the following sub-folders:
 
-- **Original Data**.  Original data, with a "DATA_SOURCES.md" or "READ ME.txt" file
-that documents data sources.  
+- **Original Data**.  Original data, with a "DATA_SOURCES.md" or "READ ME.txt" 
+file that documents data sources.  
     **DATA IN THIS FOLDER IS AS ORIGINALLY PROVIDED OR ACCESSED.** 
 
 - **Derived Data**.  Data derived from the original raw data.  Includes
