@@ -513,6 +513,9 @@ plot(temperature_gam$gam)
 
 <img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-8-2.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-8-3.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-8-4.png" style="display: block; margin: auto;" />
 
+Note that the peak temperatures in the afternoon shift later from winter
+to spring to summer, and then shift earlier again in fall.
+
 ``` r
 rm(temperature_gam)
 ```
@@ -568,6 +571,11 @@ plot(salinity_gam$gam)
 
 <img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-11-2.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-11-3.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-11-4.png" style="display: block; margin: auto;" />
 
+Diurnal patterns in salinity are a bit of a surprise. Note the very
+small magnitude of these effects. We are unaware of any mechanism that
+would cause these patterns. While we see them in this data set, we might
+want to consider them provisional.
+
 ``` r
 rm(salinity_gam)
 ```
@@ -621,6 +629,9 @@ plot(pctsat_gam$gam)
 
 <img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-14-2.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-14-3.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-14-4.png" style="display: block; margin: auto;" />
 
+The pattern is very similar to the DO pattern, suggesting metabolism,
+and not just solubility influence the observed oxygen pattern.
+
 ``` r
 rm(pctsat_gam)
 ```
@@ -673,6 +684,10 @@ plot(ph_gam$gam)
 ```
 
 <img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-17-2.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-17-3.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-17-4.png" style="display: block; margin: auto;" />
+
+Diurnal pH patterns were examined in more detail in the
+[CBEP\_OA\_sum](https:github.com/CBEP-SoCB/CBEP_OA_sum) and
+[FOCB\_OA\_sum](https:github.com/CBEP-SoCB/FOCB_OA_sum) repositories.
 
 ``` r
 rm(ph_gam)
@@ -728,6 +743,11 @@ plot(chl_log1_gam$gam)
 ```
 
 <img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-20-2.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-20-3.png" style="display: block; margin: auto;" /><img src="FOCB_CMS1_diurnal_graphics_Summary_files/figure-gfm/unnamed-chunk-20-4.png" style="display: block; margin: auto;" />
+
+Chlorophyll levels (in surface waters) are lowest around mid-day, and
+highest at night year-round. It’s not clear why this is so, and the
+magnitude of the effect is not large but it is statistically very
+robust.
 
 ``` r
 rm(chl_log1_gam)
