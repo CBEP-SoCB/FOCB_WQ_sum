@@ -39,14 +39,8 @@ review, critique, learn from, and build upon CBEP science.
  
  This archive contains the following sub-folders:
 
-- **Original Data**.  Original data, with a "DATA_SOURCES.md" or "READ ME.txt" 
-file that documents data sources.  
-    **DATA IN THIS FOLDER IS AS ORIGINALLY PROVIDED OR ACCESSED.** 
-
-- **Derived Data**.  Data derived from the original raw data.  Includes
-documentation of data reorganization steps, either in the form of files (R
-notebooks, Excel files, etc.) that embody data transformations, or via another
-README.txt file.
+- **Data**.  Data folder. Contains data in simplified or derived form as used in our data analysis. 
+- Associated metadata is contained in related Markdown documents, usually DATA_SOURCES.md and DATA_NOTES.md.
 
 - **Analysis**.  Contains one or more R Notebooks proceeding through the data
 analysis steps.
