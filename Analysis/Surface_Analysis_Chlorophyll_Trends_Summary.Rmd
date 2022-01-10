@@ -25,7 +25,7 @@ looking at levels of chlorophyll A. Additional details of these analyses are
 presented in the "Surface_Analysis_Trends.md" RNotebook.  
 
 In developing those analyses, we ran into a problem generating usable graphics
-for State of Casco BAy, when the Y axis is a transformed variable.
+for State of Casco Bay, when the Y axis is a transformed variable.
 
 # Load Libraries
 ```{r load_libraries}
@@ -104,7 +104,7 @@ the_data <- the_data %>%
 
 # Analysis of Trends
 Our goal here is to identify whether there are long-term trends in chlorophyll.
-This is problematic...
+This is problematic.
 
 ## Construct Nested Tibble
 ```{r nested}
@@ -310,7 +310,7 @@ trans_list <- list(chl = "identity",
 )
 ```
 
-## Lets see if this works...
+## Lets see if this works
 The only trick involved is explicitly embedding the object returned from 
 `emmeans()` (which is an S4 object) in a list before adding it to the larger
 list.
@@ -361,7 +361,7 @@ nested_data <- nested_data %>%
 cbind(nested_data$parameter, nested_data$slopes)
 ```
 
-At least all slopes are negative....
+At least all slopes are negative.
 
 # Build Graphics
 ##  Handling Transformations
@@ -457,7 +457,7 @@ working data sets to explore.
 df_three <- nested_data %>%
   filter(parameter == 'chl') %>%
   pull(data)           # Returns a list
-df_three <- df_three[[1]]  # Extract the first item....  df is now a dataframe
+df_three <- df_three[[1]]  # Extract the first item.  df is now a dataframe
 df_three <- df_three %>%
   filter(! is.na(value))
 ```

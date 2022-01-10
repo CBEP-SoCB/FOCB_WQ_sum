@@ -26,7 +26,7 @@ Curtis C. Bohlen, Casco Bay Estuary Partnership
         results.](#deriving-annotations-from-general-results)
     -   [Marginal Means](#marginal-means)
         -   [Limit Forecasts Chlorophyll](#limit-forecasts-chlorophyll)
--   [Part 3: Approach to Graphics](#part-3-approach-to-graphics)
+-   [Part 3: Graphics Preparation](#part-3-graphics-preparation)
     -   [Facet Graphics](#facet-graphics)
     -   [Data Set up](#data-set-up)
     -   [Fixing the Chlorophyll Y Axis](#fixing-the-chlorophyll-y-axis)
@@ -66,21 +66,15 @@ overall trends.
 
 ``` r
 library(tidyverse)
-#> Warning: package 'tidyverse' was built under R version 4.0.5
 #> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 #> v ggplot2 3.3.5     v purrr   0.3.4
 #> v tibble  3.1.6     v dplyr   1.0.7
 #> v tidyr   1.1.4     v stringr 1.4.0
-#> v readr   2.1.0     v forcats 0.5.1
-#> Warning: package 'ggplot2' was built under R version 4.0.5
-#> Warning: package 'tidyr' was built under R version 4.0.5
-#> Warning: package 'dplyr' was built under R version 4.0.5
-#> Warning: package 'forcats' was built under R version 4.0.5
+#> v readr   2.1.1     v forcats 0.5.1
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
 library(lemon)   # A few enhancements for ggplot graphics.
-#> Warning: package 'lemon' was built under R version 4.0.5
 #> 
 #> Attaching package: 'lemon'
 #> The following object is masked from 'package:purrr':
@@ -92,7 +86,6 @@ library(lemon)   # A few enhancements for ggplot graphics.
 library(readxl)
 
 library(mgcv)     # For `gam()` models, used here for hierarchical models
-#> Warning: package 'mgcv' was built under R version 4.0.5
 #> Loading required package: nlme
 #> 
 #> Attaching package: 'nlme'
@@ -101,12 +94,9 @@ library(mgcv)     # For `gam()` models, used here for hierarchical models
 #>     collapse
 #> This is mgcv 1.8-38. For overview type 'help("mgcv-package")'.
 library(emmeans)
-#> Warning: package 'emmeans' was built under R version 4.0.5
 
 library(ggpmisc)  # Allows absolute positioning of annotations and text
-#> Warning: package 'ggpmisc' was built under R version 4.0.5
 #> Loading required package: ggpp
-#> Warning: package 'ggpp' was built under R version 4.0.5
 #> 
 #> Attaching package: 'ggpp'
 #> The following object is masked from 'package:ggplot2':
@@ -615,7 +605,7 @@ preds <- preds %>% filter(year > 2000)
 nested_data$emmi_3[nested_data$parm == 'chl_log1p'] <- list(preds)
 ```
 
-# Part 3: Approach to Graphics
+# Part 3: Graphics Preparation
 
 ## Facet Graphics
 
@@ -994,7 +984,7 @@ graphic to match the other figures.
     
     theme(legend.position = 'bottom')
   print(plt1)
-#> Warning: Removed 14 rows containing missing values (geom_point).
+#> Warning: Removed 10 rows containing missing values (geom_point).
 ```
 
 <img src="Surface_Trends_Graphics_Summary_files/figure-gfm/chl_separate_graphics-1.png" style="display: block; margin: auto;" />

@@ -32,30 +32,24 @@ release raw data and data analysis code whenever possible to allow others to
 review, critique, learn from, and build upon CBEP science.
 
 # Archive Structure
- CBEP 2020 State of the Bay data analysis repositories are divided into from two
- to four sub-folders.  All archives contain an "Original_Data" folder and at
- least one other folder, usually "Graphics" or "Analysis". Other folders, often
- a "Derived_Data" folder are included if necessary.
- 
- This archive contains the following sub-folders:
+CBEP 2020/2021 State of the Bay data analysis summaries contain a selection of 
+data,  data analysis code, and visualization code as used to produce 
+results shared via our most recent State of Casco Bay report. Usually, these
+archives are organized into two or three folders, including the following:
 
-- **Original Data**.  Original data, with a "DATA_SOURCES.md" or "READ ME.txt" 
-file that documents data sources.  
-    **DATA IN THIS FOLDER IS AS ORIGINALLY PROVIDED OR ACCESSED.** 
+- `Data`  folder.  Contains data in simplified or derived form as used in our
+data  analysis.  Associated metadata is contained in related Markdown documents,
+usually `DATA_SOURCES.md` and `DATA_NOTES.md`.
 
-- **Derived Data**.  Data derived from the original raw data.  Includes
-documentation of data reorganization steps, either in the form of files (R
-notebooks, Excel files, etc.) that embody data transformations, or via another
-README.txt file.
+- Analysis.  Contains one or more R Notebooks proceeding through the principal
+data analysis steps that underpin SoCB reporting. To simplify the archives,
+much preliminary analysis, and many analysis "dead ends" have been omitted. 
 
-- **Analysis**.  Contains one or more R Notebooks proceeding through the data
-analysis steps.
-
-- **Graphics**.  Contains R Notebooks stepping through development of related
-graphics, and also raw copies of resulting graphics, usually in \*.png and
-\*.pdf formats.  These graphics may differ from graphics as they appear in final
-State of the Bay graphical layouts.
-  
+- Graphics.  Contains R Notebooks stepping through development of graphics, and
+also copies of resulting graphics, usually in \*.png and \*.pdf formats.  These
+graphics may differ from graphics as they appear in final State of the Bay
+graphical layouts. Again, most draft versions of graphics have been omitted for 
+clarity.
 
 # Summary of Data Sources
 Friends of Casco Bay has been monitoring water quality in Casco Bay for nearly

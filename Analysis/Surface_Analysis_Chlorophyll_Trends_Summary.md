@@ -21,7 +21,7 @@ Curtis C. Bohlen, Casco Bay Estuary Partnership
 -   [Clean Up `nested_data`](#clean-up-nested_data)
 -   [Predictions with `emmeans()`](#predictions-with-emmeans)
     -   [Handling Transformations](#handling-transformations)
-    -   [Lets see if this works…](#lets-see-if-this-works)
+    -   [Lets see if this works](#lets-see-if-this-works)
 -   [Final Model Review](#final-model-review)
     -   [ANOVAs](#anovas)
     -   [Slopes](#slopes)
@@ -45,30 +45,24 @@ these analyses are presented in the “Surface\_Analysis\_Trends.md”
 RNotebook.
 
 In developing those analyses, we ran into a problem generating usable
-graphics for State of Casco BAy, when the Y axis is a transformed
+graphics for State of Casco Bay, when the Y axis is a transformed
 variable.
 
 # Load Libraries
 
 ``` r
 library(tidyverse)
-#> Warning: package 'tidyverse' was built under R version 4.0.5
 #> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 #> v ggplot2 3.3.5     v purrr   0.3.4
 #> v tibble  3.1.6     v dplyr   1.0.7
 #> v tidyr   1.1.4     v stringr 1.4.0
-#> v readr   2.1.0     v forcats 0.5.1
-#> Warning: package 'ggplot2' was built under R version 4.0.5
-#> Warning: package 'tidyr' was built under R version 4.0.5
-#> Warning: package 'dplyr' was built under R version 4.0.5
-#> Warning: package 'forcats' was built under R version 4.0.5
+#> v readr   2.1.1     v forcats 0.5.1
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
 library(readxl)
 
 library(mgcv)     # For `gam()` and `gamm()` models
-#> Warning: package 'mgcv' was built under R version 4.0.5
 #> Loading required package: nlme
 #> 
 #> Attaching package: 'nlme'
@@ -77,7 +71,6 @@ library(mgcv)     # For `gam()` and `gamm()` models
 #>     collapse
 #> This is mgcv 1.8-38. For overview type 'help("mgcv-package")'.
 library(emmeans)
-#> Warning: package 'emmeans' was built under R version 4.0.5
 
 library(CBEPgraphics)
 load_cbep_fonts()
@@ -154,7 +147,7 @@ the_data <- the_data %>%
 # Analysis of Trends
 
 Our goal here is to identify whether there are long-term trends in
-chlorophyll. This is problematic…
+chlorophyll. This is problematic.
 
 ## Construct Nested Tibble
 
@@ -566,7 +559,7 @@ trans_list <- list(chl = "identity",
 )
 ```
 
-## Lets see if this works…
+## Lets see if this works
 
 The only trick involved is explicitly embedding the object returned from
 `emmeans()` (which is an S4 object) in a list before adding it to the
@@ -712,7 +705,7 @@ cbind(nested_data$parameter, nested_data$slopes)
 #> [5,] "log25_chl" -0.01151513
 ```
 
-At least all slopes are negative….
+At least all slopes are negative.
 
 # Build Graphics
 
@@ -793,26 +786,26 @@ for (p in nested_data$parameter) {
   
   print(my_plot_fxn(d,p,l,u, t))
 }
-#> Warning: Removed 14 rows containing missing values (geom_point).
+#> Warning: Removed 13 rows containing missing values (geom_point).
 ```
 
 <img src="Surface_Analysis_Chlorophyll_Trends_Summary_files/figure-gfm/make_plots-1.png" style="display: block; margin: auto;" />
 
     #> Warning in self$trans$transform(x): NaNs produced
     #> Warning: Transformation introduced infinite values in continuous y-axis
-    #> Warning: Removed 31 rows containing missing values (geom_point).
+    #> Warning: Removed 29 rows containing missing values (geom_point).
 
 <img src="Surface_Analysis_Chlorophyll_Trends_Summary_files/figure-gfm/make_plots-2.png" style="display: block; margin: auto;" />
 
-    #> Warning: Removed 12 rows containing missing values (geom_point).
+    #> Warning: Removed 14 rows containing missing values (geom_point).
 
 <img src="Surface_Analysis_Chlorophyll_Trends_Summary_files/figure-gfm/make_plots-3.png" style="display: block; margin: auto;" />
 
-    #> Warning: Removed 12 rows containing missing values (geom_point).
+    #> Warning: Removed 15 rows containing missing values (geom_point).
 
 <img src="Surface_Analysis_Chlorophyll_Trends_Summary_files/figure-gfm/make_plots-4.png" style="display: block; margin: auto;" />
 
-    #> Warning: Removed 12 rows containing missing values (geom_point).
+    #> Warning: Removed 14 rows containing missing values (geom_point).
 
 <img src="Surface_Analysis_Chlorophyll_Trends_Summary_files/figure-gfm/make_plots-5.png" style="display: block; margin: auto;" />
 
@@ -833,7 +826,7 @@ create working data sets to explore.
 df_three <- nested_data %>%
   filter(parameter == 'chl') %>%
   pull(data)           # Returns a list
-df_three <- df_three[[1]]  # Extract the first item....  df is now a dataframe
+df_three <- df_three[[1]]  # Extract the first item.  df is now a dataframe
 df_three <- df_three %>%
   filter(! is.na(value))
 ```

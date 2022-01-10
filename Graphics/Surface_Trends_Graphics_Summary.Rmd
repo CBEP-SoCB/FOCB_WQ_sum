@@ -325,7 +325,7 @@ preds <- preds %>% filter(year > 2000)
 nested_data$emmi_3[nested_data$parm == 'chl_log1p'] <- list(preds)
 ```
 
-# Part 3: Approach to Graphics
+# Part 3: Graphics Preparation
 ## Facet Graphics
 We want to generate facet graphics rather than individual graphics. The facet 
 graphics should mimic the organization of the graphics showing recent 
